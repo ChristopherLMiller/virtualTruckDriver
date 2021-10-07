@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="utf-8">
     <title>virtualTruckDriver</title>
   </head>
   <body>
@@ -9,7 +10,11 @@
     <button data-key="h">Headlights</button>
     <button data-key="q" data-modifier='["command"]'>Quit</button>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/app.js" type="module"></script>
+    <p>Node.js <span id="node-version"></span></p>
+    <p>Chromium <span id="chrome-version"></span></p>
+    <p>Electron <span id="electron-version"></span></p>
+
+    <script src="https://cdn.socket.io/4.2.0/socket.io.js"></script>
+    <script src="app.js"></script>
   </body>
   </html>

@@ -4,8 +4,8 @@
   "description": "HTML webapp to control ATS/ETS using sockets",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "build": "node compile.js",
+    "start": "electron .",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,11 +20,11 @@
   "homepage": "https://github.com/ChristopherLMiller/virtualTruckDriver#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "nexe": "^4.0.0-beta.19",
     "robotjs": "^0.6.0",
     "socket.io": "^4.2.0"
   },
   "devDependencies": {
+    "electron": "^15.1.1",
     "nodemon": "^2.0.13"
   }
 }

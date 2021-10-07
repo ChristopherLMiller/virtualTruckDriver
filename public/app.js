@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io('http://10.19.136.10:3000');
 
 document.addEventListener('click', (event) => {
   const key = event.target.getAttribute('data-key');
