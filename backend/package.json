@@ -1,0 +1,29 @@
+{
+  "name": "virtualtruckdriver-backend",
+  "version": "1.0.1",
+  "description": "Backend websocket service for ATS/ETS",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChristopherLMiller/virtualTruckDriver.git"
+  },
+  "author": "ChristopherLMiller",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ChristopherLMiller/virtualTruckDriver/issues"
+  },
+  "homepage": "https://github.com/ChristopherLMiller/virtualTruckDriver#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pkg": "^5.3.3",
+    "robotjs": "^0.6.0",
+    "socket.io": "^4.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
