@@ -1,27 +1,70 @@
+// depedencies relating to the overall app
 const express = require('express');
 const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const {Server} = require('socket.io');
 const io = new Server(server);
-
 const robot = require('robotjs');
+const bcrypt = require('bcrypt');
+const { createLogger, format, transports} = require('winston');
+const { combine, timestamp, label, printf } = format;
+const ip = require('ip');
+
+// fetching the config file
+require('dotenv').config();
+
+const saltRounds = 10;
+const hashedPassword = bcrypt.hashSync(process.env.PASSWORD, saltRounds);
+
+// Format of the log file
+const logFormat = printf(({ level, message, label, timestamp }) => {
+  return `${timestamp} [${label}] ${level}: ${message}`;
+});
+
+// Create the logger
+const logger = createLogger({
+  level: 'info',
+  format: combine(
+    label({ label: 'Event'}),
+    timestamp(),
+    logFormat),
+  transports: [
+    new transports.Console(),
+    new transports.File({ filename: __dirname + '/logs/app.log' })
+  ]
+});
+
+// Function to check if the password is correct
+function isAuthorized(password) {
+  return bcrypt.compareSync(password, hashedPassword);
+}
 
 // configure static asset serving
 app.use(express.static(__dirname + '/public'));
 
+// setup middleware to handle auth
+io.use((socket, next) => {
+  if (isAuthorized(socket?.handshake?.auth?.password)) {
+    next();
+  } else {
+    logger.info(`Invalid Login Attempt: Remote IP - ${socket.conn.remoteAddress}`)
+    next(new Error('Unauthorized - password required to login'));
+  }
+});
+
 // setup the socket connection
 io.on('connection', (socket) => {
-  console.log('client connected');
+  logger.info(`Connection Established: Remote IP - ${socket?.conn?.remoteAddress}`);
 
   // listen for disconnect, log for debugging purposes
   socket.on('disconnect', () => {
-    console.log('client disconnected');
+    logger.info(`Connection Disconnected: Remote IP - ${socket?.conn?.remoteAddress}`);
   });
 
   // listen for message from client
   socket.on('keypress', (event) => {
-    console.log(event);
+    logger.info(`Keypress: Key - ${event.key}, Modifiers: ${event.modifier}`)
     if (event?.modifier) {
       robot.keyTap(event.key, event.modifier);
     } else {
@@ -30,6 +73,7 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(3000, () => {
-  console.log('server listening on *:3000');
+// Launch the server
+server.listen(process.env.PORT, () => {
+  logger.info(`Server Starting: http://${ip.address()}:${process.env.PORT}`);
 });
