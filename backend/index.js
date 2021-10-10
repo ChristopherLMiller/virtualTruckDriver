@@ -1,15 +1,18 @@
 // depedencies relating to the overall app
 const express = require('express');
-const app = express();
 const http = require('http');
-const server = http.createServer(app);
 const {Server} = require('socket.io');
-const io = new Server(server);
 const robot = require('robotjs');
 const bcrypt = require('bcrypt');
 const { createLogger, format, transports} = require('winston');
-const { combine, timestamp, label, printf } = format;
 const ip = require('ip');
+
+// setup the app
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, { cors: {
+  origin: '*'
+}});
 
 // fetching the config file
 require('dotenv').config();
@@ -18,6 +21,7 @@ const saltRounds = 10;
 const hashedPassword = bcrypt.hashSync(process.env.PASSWORD, saltRounds);
 
 // Format of the log file
+const { combine, timestamp, label, printf } = format;
 const logFormat = printf(({ level, message, label, timestamp }) => {
   return `${timestamp} [${label}] ${level}: ${message}`;
 });
