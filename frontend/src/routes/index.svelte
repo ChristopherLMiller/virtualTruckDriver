@@ -1,2 +1,3 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<h1>Welcome to virtualTruckDriver</h1>
+<a href="/controls">Controls</a>
+<a href="/telemetry">Telemetry</a>
