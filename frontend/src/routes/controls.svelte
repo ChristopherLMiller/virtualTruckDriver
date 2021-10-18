@@ -7,6 +7,7 @@
 		// setup the connetion to the socket server
 		const socket = io('http://localhost:3005', { auth: { password: 'test' } });
 		socket.on('connect_error', (err) => console.log(`Unable to connect to server: ${err.message}`));
+		socket.on('disconnect', (reason) => console.log(`Disconnected from server - ${reason}`));
 
 		// Event listener for 'press' buttons
 		const pressButtons = document.querySelectorAll('button[data-type="press"]');
@@ -30,6 +31,10 @@
 				const key = button.getAttribute('data-key');
 				socket.emit('keypress', { key, type: 'toggle', direction: 'up' });
 			});
+		});
+
+		socket.on('consoleLog', (message) => {
+			console.log(message);
 		});
 	});
 </script>
